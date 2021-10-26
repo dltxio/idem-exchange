@@ -1,12 +1,25 @@
 import express = require('express');
-const webSocketsServerPort = 3002;
+import * as dotenv from "dotenv";
 const webSocketServer = require('websocket').server;
+const https = require('https');
 const http = require('http');
 
+dotenv.config();
 const app = express();
+const webSocketsServerPort = process.env.WS_PORT;
+var fs = require('fs');
+
+var server;
+try {
+  const privateKey = fs.readFileSync(process.env.PRIVATE_KEY, 'utf8');
+  const certificate = fs.readFileSync(process.env.CERTIFICATE, 'utf8');
+  const credentials = { key: privateKey, cert: certificate };
+  server = https.createServer(credentials);
+} catch (e) {
+  server = http.createServer();
+}
 
 // Spinning the http server and the websocket server.
-const server = http.createServer();
 server.listen(webSocketsServerPort);
 const wsServer = new webSocketServer({
   httpServer: server
@@ -38,11 +51,11 @@ wsServer.on('message', function(request) {
   console.log(request);
 });
 
-app.get("/api", function (req, res, next) {
+app.get("/", function (req, res, next) {
   Object.keys(clients).map((client) => {
     clients[client].sendUTF(JSON.stringify({email: "user@idem.com", name: "Mr Idem User", DoB: "25th December, 1984"}));
   });
   res.send("Successfully verified account");
 });
 
-app.listen("3001");
+app.listen(process.env.API_PORT);
