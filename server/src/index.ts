@@ -38,11 +38,11 @@ wsServer.on('message', function(request) {
   console.log(request);
 });
 
-app.get("/", function (req, res, next) {
+app.get("/api", function (req, res, next) {
   Object.keys(clients).map((client) => {
     clients[client].sendUTF(JSON.stringify({email: "user@idem.com", name: "Mr Idem User", DoB: "25th December, 1984"}));
   });
-  res.send("test");
+  res.send("Successfully verified account");
 });
 
 app.listen("3001");
