@@ -29,37 +29,41 @@ function LoginPage({connecting}) {
         Register a new account
       </div>
       <div className="grid grid-cols-2 w-full text-left">
-      <div>old way</div>
-      <div className="ml-4">idem way</div>
-        <div className="border-2 border-black px-16 py-4 mr-4">
-          <form>
-            <div className="form-group pb-4">
-              <label htmlFor="exampleInputEmail1">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-              />
-            </div>
-            <div className="form-group pb-4">
-              <label htmlFor="exampleInputPassword1">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="exampleInputPassword1"
-                placeholder="Password"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Register
-            </button>
-          </form>
+        <div className="card mr-4">
+          <div className="card-header">Old Way</div>
+          <div className="card-body">
+            <form>
+              <div className="form-group pb-4">
+                <label htmlFor="exampleInputEmail1">Email address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                />
+              </div>
+              <div className="form-group pb-4">
+                <label htmlFor="exampleInputPassword1">Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  placeholder="Password"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Register
+              </button>
+            </form>
+          </div>
         </div>
-        <div className="border-2 border-black grid place-items-center ml-4">
-          {connecting ? <div> Connecting </div>
-          : <QRCode size={150} value={process.env.REACT_APP_QR_CODE} />}
+        <div className="card ml-4">
+          <div className="card-header">Idem Way</div>
+            <div className="card-body grid place-items-center">
+              {connecting ? <div> Connecting </div>
+              : <QRCode size={150} value={process.env.REACT_APP_QR_CODE} />}
+          </div>
         </div>
       </div>
     </div>
