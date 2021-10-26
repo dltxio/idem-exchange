@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import DemoPage from '../pages/DemoPage';
 
-const client = new W3CWebSocket('ws://localhost:3002');
+const client = new W3CWebSocket(process.env.REACT_APP_WS_URL);
 const userId = "testUser"
 
 class Websocket extends Component {
-  componentWillMount() {
+  componentDidMount() {
     client.onopen = () => {
      console.log('WebSocket Client Connected');
     };
