@@ -27,7 +27,7 @@ wsServer.on('request', function(request) {
   const connection = request.accept(null, request.origin);
   clients[userID] = connection;
   console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
-  connection.sendUTF(userID);
+  connection.sendUTF("connected");
 
   connection.on('message', function(msg) {
     console.log(msg);
