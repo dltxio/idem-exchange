@@ -77,44 +77,47 @@ function DataPage({email, name, DoB}) {
         Your account
       </div>
       <div className="grid grid-cols-2 w-full text-left">
-      <div>Details</div>
-      <div className="ml-4">Proofs</div>
-        <div className="border-2 border-black px-16 py-4 mr-4">
-          <form>
-            <div className="form-group pb-4">
-              <label htmlFor="exampleInputEmail1">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
-                value={email}
-              />
-            </div>
-            <div className="form-group pb-4">
-              <label htmlFor="Name">Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="Name"
-                placeholder="Name"
-                value={name}
-              />
-            </div>
-            <div className="form-group pb-4">
-              <label htmlFor="DateOfBirth">Date Of Birth</label>
-              <input
-                type="text"
-                className="form-control"
-                id="DateOfBirth"
-                placeholder="DoB"
-                value={DoB}
-              />
-            </div>
-          </form>
+        <div className="card mr-4">
+          <div className="card-header">Details</div>
+          <div className="card-body">
+            <form>
+              <div className="form-group pb-4">
+                <label htmlFor="exampleInputEmail1">Email address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                  value={email}
+                />
+              </div>
+              <div className="form-group pb-4">
+                <label htmlFor="Name">Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="Name"
+                  placeholder="Name"
+                  value={name}
+                />
+              </div>
+              <div className="form-group pb-4">
+                <label htmlFor="DateOfBirth">Date Of Birth</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="DateOfBirth"
+                  placeholder="DoB"
+                  value={DoB}
+                />
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="border-2 border-black grid place-items-center ml-4">
+        <div className="card ml-4">
+          <div className="card-header">Proofs</div>
+          <div className="card-body"></div>
         </div>
       </div>
     </div>
