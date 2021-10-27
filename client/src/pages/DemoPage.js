@@ -4,25 +4,35 @@ import { useState } from "react";
 
 function DemoPage({websocket}) {
   const [data, setData] = useState({email: "", name: "", DoB: ""});
+  const [connectionId, setConnectionId] = useState(undefined);
   const [connecting, setConnecting] = useState(true);
 
 
-  websocket.onmessage = (message) => {
-    if (message.data === "connected") {
-      setConnecting(false);
-    } else {
-      setData(JSON.parse(message.data));
+  websocket.onmessage = (messageData) => {
+    try {
+      const message = JSON.parse(message.data)
+    
+      if (message.id) {
+        setConnectionId(message.id);
+        setConnecting(false);
+      } else {
+        setData(JSON.parse(message));
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
+  const qrCode = `${process.env.REACT_APP_QR_CODE}?id=${connectionId}`
+
   if (data.email === "") {
-    return LoginPage({connecting: connecting});
+    return LoginPage({connecting: connecting, qrCode: qrCode});
   } else {
     return DataPage({email: data.email, name: data.name, DoB: data.DoB});
   }
 }
 
-function LoginPage({connecting}) {
+function LoginPage({connecting, qrCode}) {
   return (
     <div className="App px-16">
       <div className="font-bold text-3xl py-4 text-left">
@@ -62,7 +72,7 @@ function LoginPage({connecting}) {
           <div className="card-header">Idem Way</div>
             <div className="card-body grid place-items-center">
               {connecting ? <div> Connecting </div>
-              : <QRCode size={150} value={process.env.REACT_APP_QR_CODE} />}
+              : <QRCode size={150} value={qrCode} />}
           </div>
         </div>
       </div>
