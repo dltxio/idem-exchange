@@ -10,13 +10,12 @@ function DemoPage({websocket}) {
 
   websocket.onmessage = (messageData) => {
     try {
-      const message = JSON.parse(message.data)
-    
+      const message = JSON.parse(messageData.data);
       if (message.id) {
         setConnectionId(message.id);
         setConnecting(false);
       } else {
-        setData(JSON.parse(message));
+        setData(message);
       }
     } catch (e) {
       console.log(e);
