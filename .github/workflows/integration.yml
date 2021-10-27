@@ -25,7 +25,7 @@ jobs:
           script: |
               cd ~/idem-exchange/client &&
               git stash && 
-              git checkout main &&
+              git checkout development &&
               git pull &&
               yarn && 
               pm2 del all && 
