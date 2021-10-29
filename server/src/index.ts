@@ -62,7 +62,7 @@ wsServer.on("message", (request) => {
   console.log(request);
 });
 
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   Object.keys(clients).map((client) => {
     clients[client].sendUTF(
       JSON.stringify({
