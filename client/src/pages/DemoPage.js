@@ -6,8 +6,7 @@ function DemoPage({websocket}) {
   const [data, setData] = useState({email: "", name: "", DoB: ""});
   const [connectionId, setConnectionId] = useState(undefined);
   const [connecting, setConnecting] = useState(true);
-
-
+  
   websocket.onmessage = (messageData) => {
     try {
       const message = JSON.parse(messageData.data);
@@ -22,7 +21,7 @@ function DemoPage({websocket}) {
     }
   };
 
-  const qrCode = `${process.env.REACT_APP_QR_CODE}?id=${connectionId}`
+  const qrCode = `${process.env.REACT_APP_QR_CODE}?id=${connectionId}`;
 
   if (data.email === "") {
     return LoginPage({connecting: connecting, qrCode: qrCode});
@@ -49,7 +48,7 @@ function LoginPage({connecting, qrCode}) {
                   className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
-                  placeholder="Enter email"
+                  placeholder="user@idem.com.au"
                 />
               </div>
               <div className="form-group pb-4">
@@ -97,7 +96,7 @@ function DataPage({email, name, DoB}) {
                   className="form-control"
                   id="exampleInputEmail1"
                   aria-describedby="emailHelp"
-                  placeholder="Enter email"
+                  placeholder="user@idem.com.au"
                   value={email}
                 />
               </div>
