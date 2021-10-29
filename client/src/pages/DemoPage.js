@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import QRCode from 'qrcode.react';
+import QRCode from "qrcode.react";
 import { useState } from "react";
 
 function DemoPage({websocket}) {
