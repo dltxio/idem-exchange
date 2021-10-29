@@ -36,8 +36,9 @@ const getUniqueID = () => {
       .substring(1);
   return s4() + s4() + "-" + s4();
 };
-wsServer.on("request", function (request) {
-  var userID = getUniqueID();
+
+wsServer.on("request", (request) => {
+  const userID = getUniqueID();
   console.log(
     new Date() +
       " Recieved a new connection from origin " +
@@ -57,15 +58,15 @@ wsServer.on("request", function (request) {
   });
 });
 
-wsServer.on("message", function (request) {
+wsServer.on("message", (request) => {
   console.log(request);
 });
 
-app.get("/", function (req, res, next) {
+app.get("/", (req, res, next) => {
   Object.keys(clients).map((client) => {
     clients[client].sendUTF(
       JSON.stringify({
-        email: "user@idem.com",
+        email: "user@idem.com.au",
         name: "Mr Idem User",
         DoB: "25th December, 1984",
       })
