@@ -2,12 +2,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import QRCode from "qrcode.react";
 import { useState } from "react";
 
-function DemoPage({websocket}) {
-  const [data, setData] = useState({email: "", name: "", DoB: ""});
+const DemoPage = ({ websocket }) => {
+  const [data, setData] = useState({ email: "", name: "", DoB: "" });
   const [connectionId, setConnectionId] = useState(undefined);
   const [connecting, setConnecting] = useState(true);
-  
-  websocket.onmessage = (messageData) => {
+
+  websocket.onmessage = messageData => {
     try {
       const message = JSON.parse(messageData.data);
       if (message.id) {
@@ -24,13 +24,13 @@ function DemoPage({websocket}) {
   const qrCode = `${process.env.REACT_APP_QR_CODE}?id=${connectionId}`;
 
   if (data.email === "") {
-    return LoginPage({connecting: connecting, qrCode: qrCode});
-  } else {
-    return DataPage({email: data.email, name: data.name, DoB: data.DoB});
+    return LoginPage({ connecting: connecting, qrCode: qrCode });
   }
+  
+  return DataPage({ email: data.email, name: data.name, DoB: data.DoB });
 }
 
-function LoginPage({connecting, qrCode}) {
+const LoginPage = ({ connecting, qrCode }) => {
   return (
     <div className="App px-16">
       <div className="font-bold text-3xl py-4 text-left">
@@ -68,9 +68,12 @@ function LoginPage({connecting, qrCode}) {
         </div>
         <div className="card ml-4">
           <div className="card-header">Idem Way</div>
-            <div className="card-body grid place-items-center">
-              {connecting ? <div> Connecting </div>
-              : <QRCode size={150} value={qrCode} />}
+          <div className="card-body grid place-items-center">
+            {connecting ? (
+              <div> Connecting </div>
+            ) : (
+              <QRCode size={150} value={qrCode} />
+            )}
           </div>
         </div>
       </div>
@@ -78,12 +81,10 @@ function LoginPage({connecting, qrCode}) {
   );
 }
 
-function DataPage({email, name, DoB}) {
+const DataPage = ({ email, name, DoB }) => {
   return (
     <div className="App px-16">
-      <div className="font-bold text-3xl py-4 text-left">
-        Your account
-      </div>
+      <div className="font-bold text-3xl py-4 text-left">Your account</div>
       <div className="grid grid-cols-2 w-full text-left">
         <div className="card mr-4">
           <div className="card-header">Details</div>
