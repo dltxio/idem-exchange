@@ -5,8 +5,8 @@ Copy `.env.sample` into `.env`. The following variables must be present:
 
 | ENV Variable Name | Description |
 | --- | --- |
-| PORT | Server listen port |
-| MESSAGEBIRD_KEY | API Key for MessageBird |
+| WS_PORT | Web Socket listen port |
+| API_PORT | API Listen port|
 
 ## Starting the API
 
@@ -17,30 +17,48 @@ yarn install
 yarn start
 ```
 
-Run docker from home root
-```bash
-docker-compse up
-docker-compose down
-```
-
 ## End Points
 
-### Claims
-/api/claims
-
+### Identity Verification
+/
 ```json
 {
-    "key": "0x02",
-    "type": "dob",
-    "value": "1979-04-29"
-}
-```
-
-### Emails
-/api/emails PUT
-
-```json
-{
-    "email": "lucas@dltx.io"
+    "connectionID": "16bcs3-vxc123",
+    "claims": [
+        {
+            "@context": [
+                "https://www.w3.org/2018/credentials/v1",
+            ],
+            "type": ["VerifiableCredential", "EmailCredential"],
+            "issuanceDate": "2010-01-01T19:73:24Z",
+            "credentialSubject": {
+                "name": "Email",
+                "value": "test@dltx.io",
+            },
+            "proof": {}
+        },{
+            "@context": [
+                "https://www.w3.org/2018/credentials/v1",
+            ],
+            "type": ["VerifiableCredential", "NameCredential"],
+            "issuanceDate": "2010-01-01T19:73:24Z",
+            "credentialSubject": {
+                "name": "Name",
+                "value": "John Doe",
+            },
+            "proof": {}
+        },{
+            "@context": [
+                "https://www.w3.org/2018/credentials/v1",
+            ],
+            "type": ["VerifiableCredential", "DateOfBirthCredential"],
+            "issuanceDate": "2010-01-01T19:73:24Z",
+            "credentialSubject": {
+                "name": "DoB",
+                "value": "1998-01-01T19:73:24Z",
+            },
+            "proof": {}
+        }
+    ]
 }
 ```

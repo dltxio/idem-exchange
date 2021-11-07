@@ -22,9 +22,9 @@ app.post("/", (req, res, next) => {
   //   res.status(500).send("Invalid credential type");
   // }
 
-  const dob: string | undefined = identity.claims.find(c => c.credentialSubject[0].name === "DoB")?.credentialSubject[0]?.value;
-  const email: string | undefined = identity.claims.find(c => c.credentialSubject[0].name === "Email")?.credentialSubject[0]?.value;
-  const name: string | undefined = identity.claims.find(c => c.credentialSubject[0].name === "Name")?.credentialSubject[0]?.value;
+  const dob: string | undefined = identity.claims.find(c => c.credentialSubject.name === "DoB")?.credentialSubject?.value;
+  const email: string | undefined = identity.claims.find(c => c.credentialSubject.name === "Email")?.credentialSubject?.value;
+  const name: string | undefined = identity.claims.find(c => c.credentialSubject.name === "Name")?.credentialSubject?.value;
 
   webSocket.verifyUser(identity.connectionID, {name: name, email: email, DoB: dob})
 
