@@ -17,7 +17,7 @@ The following environment variables are required:
 | :---------------- | :------------------------- |
 | REACT_APP_API_URL | e.g. http://localhost:5000 |
 
-See [example.env](./example.env) for more examples.
+See [.env.sample](./.env.sample) for more examples.
 
 If using a different port for the local development server, the proxy url needs to be updated in the package.json file.
 
