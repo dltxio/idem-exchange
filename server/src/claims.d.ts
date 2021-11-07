@@ -1,35 +1,68 @@
 declare namespace server {
-
+  type URI = string;
+  
   type IdentityRequestData = {
     claims: Claim[];
     connectionID: string;
   }
 
-  type Claim = {
+  interface Claim {
     "@context": string[];
-    id?: string;
+    id?: URI;
     key: string;
-    type: string[];
-    credentialSubject: CredentialSubject[];
+    title: string;
+    description?: string;
+    type: URI[];
+    credentialSubject: CredentialSubject;
     proof: Proof;
-    issuer: string;
+    issuer: URI;
     issuanceDate: Date;
     expirationDate?: Date;
-    credentialStatus?: CredentialStatus;
-  };
+    credentialSchema?: CredentialSchema;
+    refreshService?: RefreshService;
+    termsOfUse?: TermsOfUse;
+    evidence?: Evidence[];
+  }
 
   interface CredentialSubject {
-    id?: string;
-    name: string;
+    id?: URI;
+    name: URI;
     value: any;
   }
 
   interface Proof {
-    type: string;
+    type: URI;
   }
   
   interface CredentialStatus {
-    id: string;
-    type: string
+    id?: URI;
+    type: URI
+  }
+
+  interface CredentialSchema {
+    id?: URI;
+    type: URI;
+  }
+
+  interface RefreshService {
+    id?: URI;
+    type: URI;
+  }
+
+  interface TermsOfUse {
+    id?: URI;
+    type: URI;
+    obligation?: any;
+    prohibition?: any;
+    permission?: any;
+  }
+
+  interface Evidence {
+    id?: URI;
+    type: URI[];
+    verifier: URI;
+    evidenceDocument: string;
+    subjectPresence: string;
+    documentPresence: string;
   }
 }
