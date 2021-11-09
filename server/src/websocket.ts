@@ -37,7 +37,7 @@ export default class WebSocketService {
     this.clients = new Map;
 
     this.wsServer.on('request', (request: { origin: string; accept: (arg0: null, arg1: any) => any; }) => {
-      var userID = getUniqueID();
+      const userID = getUniqueID();
       const connection = request.accept(null, request.origin);
       this.clients.set(userID, connection);
       connection.sendUTF(JSON.stringify({id: userID}));
