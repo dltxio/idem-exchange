@@ -1,78 +1,35 @@
 import express = require("express");
+import cors = require("cors");
 import * as dotenv from "dotenv";
-const webSocketServer = require("websocket").server;
-const https = require("https");
-const http = require("http");
+import WebSocketService from "./websocket";
 
 dotenv.config();
 const app = express();
-const webSocketsServerPort = process.env.WS_PORT;
-const fs = require("fs");
+const webSocket = new WebSocketService();
+app.use(express.json())
+app.use(cors());
 
-let server;
-try {
-  const privateKey = fs.readFileSync(process.env.PRIVATE_KEY, "utf8");
-  const certificate = fs.readFileSync(process.env.CERTIFICATE, "utf8");
-  const credentials = { key: privateKey, cert: certificate };
-  server = https.createServer(credentials);
-} catch (e) {
-  server = http.createServer();
-}
-
-// Spinning the http server and the websocket server.
-server.listen(webSocketsServerPort);
-const wsServer = new webSocketServer({
-  httpServer: server,
-});
-
-// I'm maintaining all active connections in this object
-const clients = {};
-
-// This code generates unique userid for everyuser.
-const getUniqueID = () => {
-  const s4 = () =>
-    Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  return s4() + s4() + "-" + s4();
-};
-
-wsServer.on("request", (request) => {
-  const userID = getUniqueID();
-  console.log(
-    new Date() +
-      " Recieved a new connection from origin " +
-      request.origin +
-      "."
-  );
-  // You can rewrite this part of the code to accept only the requests from allowed origin
-  const connection = request.accept(null, request.origin);
-  clients[userID] = connection;
-  console.log(
-    "connected: " + userID + " in " + Object.getOwnPropertyNames(clients)
-  );
-  connection.sendUTF("connected");
-
-  connection.on("message", function (msg) {
-    console.log(msg);
-  });
-});
-
-wsServer.on("message", (request) => {
-  console.log(request);
-});
-
-app.get("/", (req, res, next) => {
-  Object.keys(clients).map((client) => {
-    clients[client].sendUTF(
-      JSON.stringify({
-        email: "user@idem.com.au",
-        name: "Mr Idem User",
-        DoB: "25th December, 1984",
-      })
-    );
-  });
+app.get("/", (req: express.Request, res: express.Response) => {
+  if (req.query.id) {
+    webSocket.verifyUser(req.query.id.toString(), {email: "user@idem.com.au", name: "Mr Idem User", DoB: "1984-12-25"});
+  }
   res.send("Successfully verified account");
+});
+
+app.post("/", (req, res, next) => {
+  const identity = req.body as server.IdentityRequestData;
+  // if (!claim.type.includes("VerifiableCredential")) {
+  //   res.status(500).send("Invalid credential type");
+  // }
+
+  const dob: string | undefined = identity.claims.find(c => c.credentialSubject.name === "DoB")?.credentialSubject?.value;
+  const email: string | undefined = identity.claims.find(c => c.credentialSubject.name === "Email")?.credentialSubject?.value;
+  const name: string | undefined = identity.claims.find(c => c.credentialSubject.name === "Name")?.credentialSubject?.value;
+
+  webSocket.verifyUser(identity.connectionID, {name: name, email: email, DoB: dob})
+
+  // res.send("Successfully verified account");
+  res.json({ message: "Successfully verified account" });
 });
 
 app.listen(process.env.API_PORT);
