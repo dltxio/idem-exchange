@@ -48,7 +48,7 @@ export default class WebSocketService {
       })
     });
   
-    this.wsServer.on('close', (request: any) => {
+    this.wsServer.on("close", (request: any) => {
       const client = Array.from(this.clients.entries()).find((client) => client[1] === request);
       if (client) {
         this.clients.delete(client[0]);
