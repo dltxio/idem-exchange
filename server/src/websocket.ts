@@ -12,7 +12,7 @@ export default class WebSocketService {
   private wsServer: any;
 
   constructor() {
-    var server;
+    let server;
     try {
       const privateKey = fs.readFileSync(process.env.privateKey, "utf8");
       const certificate = fs.readFileSync(process.env.certificate, "utf8");
