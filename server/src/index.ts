@@ -18,9 +18,6 @@ app.get("/", (req: express.Request, res: express.Response) => {
 
 app.post("/", (req, res, next) => {
   const identity = req.body as server.IdentityRequestData;
-  // if (!claim.type.includes("VerifiableCredential")) {
-  //   res.status(500).send("Invalid credential type");
-  // }
 
   const dob: string | undefined = identity.claims.find(c => c.credentialSubject.name === "DoB")?.credentialSubject?.value;
   const email: string | undefined = identity.claims.find(c => c.credentialSubject.name === "Email")?.credentialSubject?.value;
@@ -28,7 +25,6 @@ app.post("/", (req, res, next) => {
 
   webSocket.verifyUser(identity.connectionID, {name: name, email: email, DoB: dob})
 
-  // res.send("Successfully verified account");
   res.json({ message: "Successfully verified account" });
 });
 
