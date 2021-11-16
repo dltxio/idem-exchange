@@ -23,10 +23,15 @@ jobs:
           username: ${{ secrets.DO_DEPLOY_USERNAME }}
           key: ${{ secrets.DO_DEPLOY_KEY }}
           script: |
-              cd ~/idem-exchange/client &&
+              pm2 del all &&
+              cd ~/idem-exchange/ &&
               git stash && 
               git checkout development &&
               git pull &&
+              cd ~/idem-exchange/client &&
               yarn && 
-              pm2 del all && 
               pm2 start "yarn start" --name "client"
+              cd ~/idem-exchange/server &&
+              yarn &&
+              pm2 start "yarn start" --name "server"
+              
