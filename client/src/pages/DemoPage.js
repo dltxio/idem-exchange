@@ -34,11 +34,11 @@ const LoginPage = ({ connecting, qrCode }) => {
   return (
     <div className="App px-16">
       <div className="font-bold text-3xl py-4 text-left">
-        Register a new account
+        <h1>Register a new account</h1>
       </div>
       <div className="grid grid-cols-2 w-full text-left">
         <div className="card mr-4">
-          <div className="card-header">Old Way</div>
+          <div className="card-header">Legacy Way</div>
           <div className="card-body">
             <form>
               <div className="form-group pb-4">
