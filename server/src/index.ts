@@ -9,6 +9,7 @@ const webSocket = new WebSocketService();
 app.use(express.json());
 app.use(cors());
 
+// Fake route to send cliams to the client
 app.get("/", (req: express.Request, res: express.Response) => {
   if (req.query.id) {
     console.log(req.query.id);
@@ -24,15 +25,9 @@ app.get("/", (req: express.Request, res: express.Response) => {
 app.post("/", (req, res, next) => {
   const identity = req.body as server.IdentityRequestData;
 
-  const dob: string | undefined = identity.claims.find(
-    (c) => c.credentialSubject.name === "DoB"
-  )?.credentialSubject?.value;
-  const email: string | undefined = identity.claims.find(
-    (c) => c.credentialSubject.name === "Email"
-  )?.credentialSubject?.value;
-  const name: string | undefined = identity.claims.find(
-    (c) => c.credentialSubject.name === "Name"
-  )?.credentialSubject?.value;
+  const dob: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "DoB")?.credentialSubject?.value;
+  const email: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "Email")?.credentialSubject?.value;
+  const name: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "Name")?.credentialSubject?.value;
 
   webSocket.verifyUser(identity.connectionID, {
     name: name,

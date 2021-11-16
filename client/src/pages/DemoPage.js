@@ -21,7 +21,8 @@ const DemoPage = ({ websocket }) => {
     }
   };
 
-  const qrCode = `${process.env.REACT_APP_QR_CODE}?id=${connectionId}`;
+  // demo.idem.com.au/register?id=<connectionId>
+  const qrCode = `${process.env.REACT_APP_QR_CODE}?claims=[dob,email]&id=${connectionId}`;
 
   if (data.email === "") {
     return LoginPage({ connecting: connecting, qrCode: qrCode });
@@ -74,6 +75,9 @@ const LoginPage = ({ connecting, qrCode }) => {
             ) : (
               <QRCode size={150} value={qrCode} />
             )}
+          </div>
+          <div>
+            QR Code lists the claims for the user: {qrCode}
           </div>
         </div>
       </div>

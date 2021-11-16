@@ -3,6 +3,7 @@ const webSocketServer = require("websocket").server;
 const https = require("https");
 const http = require("http");
 const fs = require("fs");
+import { v4 as uuidv4 } from "uuid";
 dotenv.config();
 
 export default class WebSocketService {
@@ -21,15 +22,6 @@ export default class WebSocketService {
       server = http.createServer();
     }
 
-    // This code generates unique userid for everyuser.
-    const getUniqueID = () => {
-      const s4 = () =>
-        Math.floor((1 + Math.random()) * 0x10000)
-          .toString(16)
-          .substring(1);
-      return s4() + s4() + "-" + s4();
-    };
-
     // Spinning the http server and the websocket server.
     server.listen(this.webSocketsServerPort);
     this.wsServer = new webSocketServer({
@@ -40,7 +32,7 @@ export default class WebSocketService {
     this.wsServer.on(
       "request",
       (request: { origin: string; accept: (arg0: null, arg1: any) => any }) => {
-        const userID = getUniqueID();
+        const userID = uuidv4();
         const connection = request.accept(null, request.origin);
         this.clients.set(userID, connection);
         connection.sendUTF(JSON.stringify({ id: userID }));
