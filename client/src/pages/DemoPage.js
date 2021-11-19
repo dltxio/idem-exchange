@@ -24,7 +24,7 @@ const DemoPage = ({ websocket }) => {
   // demo.idem.com.au/register?id=<connectionId>
   const qrCode = `${process.env.REACT_APP_QR_CODE}?claims=[dob,email]&id=${connectionId}`;
 
-  if (data.email === "" && data.name === "") {
+  if (data.email === "" && data.name === "" && data.DoB === "") {
     return LoginPage({ connecting: connecting, qrCode: qrCode });
   }
   
@@ -88,7 +88,7 @@ const LoginPage = ({ connecting, qrCode }) => {
 const DataPage = ({ email, name, DoB }) => {
   return (
     <div className="App px-16">
-      <div className="font-bold text-3xl py-4 text-left">Your account</div>
+      <div className="font-bold text-3xl py-4 text-left">Welcome {email} to exchange.com</div>
       <div className="grid grid-cols-2 w-full text-left">
         <div className="card mr-4">
           <div className="card-header">Details</div>
