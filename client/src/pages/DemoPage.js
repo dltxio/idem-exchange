@@ -24,7 +24,7 @@ const DemoPage = ({ websocket }) => {
   // demo.idem.com.au/register?id=<connectionId>
   const qrCode = `${process.env.REACT_APP_QR_CODE}?claims=[dob,email]&id=${connectionId}`;
 
-  if (data.email === "") {
+  if (data.email === "" && data.name === "") {
     return LoginPage({ connecting: connecting, qrCode: qrCode });
   }
   
