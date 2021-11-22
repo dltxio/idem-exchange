@@ -14,8 +14,8 @@ export default class WebSocketService {
   constructor() {
     let server;
     try {
-      const privateKey = fs.readFileSync(process.env.privateKey, "utf8");
-      const certificate = fs.readFileSync(process.env.certificate, "utf8");
+      const privateKey = fs.readFileSync(process.env.PRIVATE_KEY, "utf8");
+      const certificate = fs.readFileSync(process.env.CERTIFICATE, "utf8");
       const credentials = { key: privateKey, cert: certificate };
       server = https.createServer(credentials);
     } catch (e) {
