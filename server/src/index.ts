@@ -10,9 +10,8 @@ app.use(express.json());
 app.use(cors());
 
 // Fake route to send cliams to the client
-app.get("/", (req: express.Request, res: express.Response) => {
+app.get("/login", (req: express.Request, res: express.Response) => {
   if (req.query.id) {
-    console.log(req.query.id);
     webSocket.verifyUser(req.query.id.toString(), {
       email: "user@idem.com.au",
       name: "Mr Idem User",
@@ -22,7 +21,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Successfully verified account");
 });
 
-app.post("/", (req, res, next) => {
+app.post("/login", (req, res, next) => {
   const identity = req.body as server.IdentityRequestData;
 
   const dob: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "DoB")?.credentialSubject?.value;
