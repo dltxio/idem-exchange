@@ -9,6 +9,8 @@
     "build": "tsc --build"
   },
   "dependencies": {
+    "asn1.js": "4.10.1",
+    "aws-sdk": "^2.1033.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ethers": "^5.4.3",
