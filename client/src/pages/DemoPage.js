@@ -1,6 +1,24 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import QRCode from "qrcode.react";
 import { useState } from "react";
+import { Formik, Form } from "formik";
+
+import { useField } from "formik";
+
+const FormGroupWrap = ({ isWrapped, children }) =>
+  isWrapped ? <div className="form-group">{children}</div> : <>{children}</>;
+
+const Input = ({ label, onChange, skinny, ...props }) => {
+  let [field, helpers] = useField(props);
+  if (onChange) field.onChange = e => onChange(e, helpers);
+  if (props.value) field.value = props.value;
+  return (
+    <FormGroupWrap isWrapped={!skinny}>
+      {label && <label>{label}</label>}
+      <input className="form-control" {...props} {...field} />
+    </FormGroupWrap>
+  );
+};
 
 const DemoPage = ({ websocket }) => {
   const [data, setData] = useState({ email: "", name: "", DoB: "" });
@@ -22,16 +40,22 @@ const DemoPage = ({ websocket }) => {
   };
 
   // demo.idem.com.au/register?id=<connectionId>
-  const qrCode = `${process.env.REACT_APP_QR_CODE}?claims=[dob,email]&id=${connectionId}`;
+  const qrCode = `${process.env.REACT_APP_QR_CODE}/register?claims=[dob,email]&id=${connectionId}`;
 
   if (data.email === "" && data.name === "" && data.DoB === "") {
     return LoginPage({ connecting: connecting, qrCode: qrCode });
   }
   
-  return DataPage({ email: data.email, name: data.name, DoB: data.DoB });
+  return AccountPage({ email: data.email, name: data.name, DoB: data.DoB });
 }
 
 const LoginPage = ({ connecting, qrCode }) => {
+  const initialValues = { username: "", password: "" };
+
+  const onSubmit = async (values, actions) => {
+    alert(JSON.stringify(values));
+  };
+
   return (
     <div className="App px-16">
       <div className="font-bold text-3xl py-4 text-left">
@@ -41,7 +65,28 @@ const LoginPage = ({ connecting, qrCode }) => {
         <div className="card mr-4">
           <div className="card-header">Legacy Way</div>
           <div className="card-body">
-            <form>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={onSubmit}
+          >
+            {({ isSubmitting }) => (
+              <Form className="login-form">
+                <label htmlFor="username">Email</label>
+                <Input name="username" placeholder="email" />
+                <label htmlFor="password">Password</label>
+                <Input name="password" type="password" placeholder="password" />
+                <button
+                  className="btn btn-primary btn-block relative d-flex justify-content-center"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  <span className="mx-2">Register</span>
+                </button>
+              </Form>
+            )}
+          </Formik>
+
+            {/* <form>
               <div className="form-group pb-4">
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input
@@ -64,7 +109,7 @@ const LoginPage = ({ connecting, qrCode }) => {
               <button type="submit" className="btn btn-primary">
                 Register
               </button>
-            </form>
+            </form>*/}
           </div>
         </div>
         <div className="card ml-4">
@@ -85,7 +130,7 @@ const LoginPage = ({ connecting, qrCode }) => {
   );
 }
 
-const DataPage = ({ email, name, DoB }) => {
+const AccountPage = ({ email, name, DoB }) => {
   return (
     <div className="App px-16">
       <div className="font-bold text-3xl py-4 text-left">Welcome {email} to exchange.com</div>
