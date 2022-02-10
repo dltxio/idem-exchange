@@ -1,6 +1,6 @@
 declare namespace server {
   type URI = string;
-  
+
   type IdentityRequestData = {
     claims: Claim[];
     connectionID: string;
@@ -33,7 +33,7 @@ declare namespace server {
   interface Proof {
     type: URI;
   }
-  
+
   interface CredentialStatus {
     id?: URI;
     type: URI

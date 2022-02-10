@@ -1,40 +1,60 @@
-import express = require("express");
-import cors = require("cors");
-import * as dotenv from "dotenv";
-import WebSocketService from "./websocket";
+import * as express from 'express';
+import * as cors from 'cors';
+import { config } from "dotenv";
+import { v4 as uuid } from "uuid";
 
-dotenv.config();
+config();
+
 const app = express();
-const webSocket = new WebSocketService();
+
+// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Fake route to send cliams to the client
-app.get("/login", (req: express.Request, res: express.Response) => {
-  if (req.query.id) {
-    webSocket.verifyUser(req.query.id.toString(), {
-      email: "user@idem.com.au",
-      name: "Mr Idem User",
-      DoB: "1984-12-25",
-    });
+// INIT IDEM CLIENTS
+type ClientMap = {
+  [key: string]: express.Response;
+}
+
+const clients: ClientMap = {};
+
+// Create open connection
+// https://www.digitalocean.com/community/tutorials/nodejs-server-sent-events-build-realtime-app
+function IDEMListener(req: express.Request, res: express.Response) {
+  const headers = {
+    'Content-Type': 'application/json',
+    'Connection': 'keep-alive',
+    'Cache-Control': 'no-cache'
   }
-  res.send("Successfully verified account");
-});
+  res.writeHead(200, headers);
 
-app.post("/login", (req, res, next) => {
-  const identity = req.body as server.IdentityRequestData;
+  const clientId = uuid();
+  clients[clientId] = res;
 
-  const dob: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "DoB")?.credentialSubject?.value;
-  const email: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "Email")?.credentialSubject?.value;
-  const name: string | undefined = identity.claims.find((c) => c.credentialSubject.name === "Name")?.credentialSubject?.value;
+  const initialData = {
+    type: 'init',
+    data: {
+      clientId: clientId,
+    }
+  }
+  res.write(JSON.stringify(initialData));
+}
 
-  webSocket.verifyUser(identity.connectionID, {
-    name: name,
-    email: email,
-    DoB: dob,
-  });
+// Opens the event listener on the client side
+app.get("/idem", IDEMListener);
 
-  res.json({ message: "Successfully verified account" });
+// Receives data from idem, stores it and sends it to the client
+app.post("/idem", (req, res) => {
+  const claims = req.body.claims;
+  // Metadata includes clientId
+  const metadata = req.body.metadata;
+  const clientId = metadata.clientId;
+
+  // logs idem data
+  console.log(req.body);
+
+  clients[clientId].write(JSON.stringify(claims));
+  res.sendStatus(200);
 });
 
 app.listen(process.env.API_PORT);
