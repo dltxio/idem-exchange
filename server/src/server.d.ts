@@ -6,6 +6,11 @@ declare namespace server {
     connectionID: string;
   }
 
+  type ServerSentEvent = {
+    type: string;
+    data: any;
+  }
+
   interface Claim {
     "@context": string[];
     id?: URI;
