@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import './styles.css';
 
-const CLAIM_CATEGORIES =['0x01', '0x02'];
+const CLAIM_CATEGORIES =[0x01, 0x02];
 
 const LoginPage = ({ setClaimData }) => {
   const [clientID, setClientID] = useState(null);
@@ -29,12 +29,12 @@ const LoginPage = ({ setClaimData }) => {
 
   function getQRCodeURL() {
     let queryClaims = "";
-    CLAIM_CATEGORIES.forEach((claim) => {
-      queryClaims += `&claim=${claim}`
-    })
+    for (let claim of CLAIM_CATEGORIES) {
+      queryClaims += `&claims=${claim}`
+    }
 
     const callbackUrl = (Buffer.from(`${process.env.REACT_APP_API_URL}/idem/${clientID}`)).toString('base64');
-    return `${process.env.REACT_APP_QR_CODE}/pretend-idem?nonce=${id.current}${queryClaims}&callback=${callbackUrl}`;
+    return `${process.env.REACT_APP_QR_CODE}?nonce=${id.current}&claims=${JSON.stringify(CLAIM_CATEGORIES)}&callback=${callbackUrl}`;
   }
 
   return (
