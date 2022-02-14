@@ -61,7 +61,7 @@ function areValidClaims(claims: any) {
   for (let key of Object.keys(claims)) {
     const recoveredAddress = ethers.utils.verifyMessage(claims[key].data, claims[key].signature);
     if (recoveredAddress.toLowerCase() != process.env.IDEM_PUBLIC_KEY.toLowerCase()) {
-      console.log(recoveredAddress, process.env.IDEM_PUBLIC_KEY);
+      console.log(`INVALID SIGNER => Signer: ${recoveredAddress}, Idem: ${process.env.IDEM_PUBLIC_KEY}`);
       return false;
     }
   }
@@ -70,7 +70,6 @@ function areValidClaims(claims: any) {
 
 // Receives data from Idem callback, stores it and sends it to the client
 app.post("/idem/:id", (req, res) => {
-  console.log(req.body)
   const claims = req.body.claims;
   const clientId = req.params.id;
 
