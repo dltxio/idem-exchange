@@ -1,5 +1,5 @@
 # idem-exchange
-A demo site for Idem workflow hosted at "https://demo.idem.com.au"
+A demo site for Idem workflow hosted at https://demo.idem.com.au
 
 ## Hosting
 
